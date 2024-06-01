@@ -6,12 +6,11 @@ import com.google.protobuf.ByteString;
 
 import io.grpc.ServerServiceDefinition;
 import io.grpc.stub.StreamObserver;
-//import tukano.api.java.Blobs;
+
 import tukano.impl.grpc.generated_java.BlobsGrpc;
 import tukano.impl.grpc.generated_java.BlobsProtoBuf.*;
 import tukano.impl.api.java.ExtendedBlobs;
 import tukano.impl.java.servers.JavaBlobs;
-import utils.Token;
 
 
 public class GrpcBlobsServerStub extends AbstractGrpcStub implements BlobsGrpc.AsyncService {
@@ -39,11 +38,11 @@ public class GrpcBlobsServerStub extends AbstractGrpcStub implements BlobsGrpc.A
 	public void download(DownloadArgs request, StreamObserver<DownloadResult> responseObserver) {
 		Log.info("requeststubbbbbbbbb"+ request.getBlobId());
 		ParsedResult result = parse(request.getBlobId());
-		Log.info("resultstubbbbbbbbb"+ result.getBlobId());
+		Log.info("resultstubbbbbbbbb"+ result.getToken());
 		 
 		var res = impl.downloadToSink(result.getBlobId(), (data) -> {
 			responseObserver.onNext(DownloadResult.newBuilder().setChunk(ByteString.copyFrom(data)).build());
-		});
+		},result.getToken());
 		
 		//var res =  impl.download(result.getBlobId(), result.getToken());
 		if (res.isOK())
@@ -81,7 +80,7 @@ public class GrpcBlobsServerStub extends AbstractGrpcStub implements BlobsGrpc.A
         int tokenIndex = str.indexOf("?token=");
         
         if (tokenIndex == -1) {
-            return new ParsedResult(str, Token.generate()); 
+            return new ParsedResult(str, ""); 
         }
 
         String blobId = str.substring(0, tokenIndex);

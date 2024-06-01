@@ -36,7 +36,7 @@ public class GrpcBlobsClient extends GrpcClient implements ExtendedBlobs {
 	}
 
 	@Override
-	public Result<byte[]> download(String blobId) {
+	public Result<byte[]> download(String blobId, String token) {
 		return super.toJavaResult(() -> {
 			var res = stub.download( DownloadArgs.newBuilder()
 				.setBlobId(blobId)
@@ -49,7 +49,7 @@ public class GrpcBlobsClient extends GrpcClient implements ExtendedBlobs {
 		});
 	}
 
-	public Result<Void> downloadToSink(String blobId, Consumer<byte[]> sink) {
+	public Result<Void> downloadToSink(String blobId, Consumer<byte[]> sink, String token) {
 		return super.toJavaResult(() -> {
 			var res = stub.download( DownloadArgs.newBuilder()
 				.setBlobId(blobId)
@@ -79,4 +79,5 @@ public class GrpcBlobsClient extends GrpcClient implements ExtendedBlobs {
 				.build());			
 		});	
 	}
+
 }

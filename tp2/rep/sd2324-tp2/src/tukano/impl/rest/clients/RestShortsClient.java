@@ -134,7 +134,7 @@ public class RestShortsClient extends RestClient implements ExtendedShorts{
 				.get());
 	}
 
-	public Result<Void> _opFromPrimary(Long version, String operation, String opType, String token) { 
+	public Result<Void> _primaryOperation(Long version, String operation, String opType, String token) { 
 		return super.toJavaResult(
 			target
 			.queryParam(RestExtendedShorts.TOKEN, token)
@@ -149,8 +149,8 @@ public class RestShortsClient extends RestClient implements ExtendedShorts{
 	}
 
 	@Override
-	public Result<Void> opFromPrimary(Long version, String operation, String opType, String token) { 
-		return super.reTry( () -> _opFromPrimary(version, operation, opType, token));
+	public Result<Void> primaryOperation(Long version, String operation, String opType, String token) { 
+		return super.reTry( () -> _primaryOperation(version, operation, opType, token));
 	}
 		
 	@Override

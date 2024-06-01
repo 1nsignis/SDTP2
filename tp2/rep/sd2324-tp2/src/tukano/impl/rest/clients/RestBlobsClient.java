@@ -21,9 +21,10 @@ public class RestBlobsClient extends RestClient implements ExtendedBlobs {
 				.post( Entity.entity(bytes, MediaType.APPLICATION_OCTET_STREAM)));
 	}
 
-	private Result<byte[]> _download(String blobId) {
+	private Result<byte[]> _download(String blobId, String token) {
 		return super.toJavaResult(
 				target.path(blobId)
+				.queryParam( RestExtendedBlobs.TOKEN, token )
 				.request()
 				.accept(MediaType.APPLICATION_OCTET_STREAM)
 				.get(), byte[].class);
@@ -52,8 +53,8 @@ public class RestBlobsClient extends RestClient implements ExtendedBlobs {
 	}
 
 	@Override
-	public Result<byte[]> download(String blobId) {
-		return super.reTry( () -> _download(blobId));
+	public Result<byte[]> download(String blobId,String token) {
+		return super.reTry( () -> _download(blobId, token));
 	}
 
 	@Override

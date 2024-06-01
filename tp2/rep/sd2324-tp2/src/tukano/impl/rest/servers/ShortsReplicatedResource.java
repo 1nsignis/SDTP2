@@ -181,8 +181,8 @@ public class ShortsReplicatedResource extends RestResource implements RestExtend
 
 	@SuppressWarnings("resource")
     @Override
-	public void opFromPrimary(Long version, String operation, String opType, String token) {
-		var res = impl.opFromPrimary(version, operation, opType, token);
+	public void primaryOperation(Long version, String operation, String opType, String token) {
+		var res = impl.primaryOperation(version, operation, opType, token);
 
 		if (!res.isOK()) {
 			throw new WebApplicationException(super.statusCodeFrom(res));

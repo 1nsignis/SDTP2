@@ -41,7 +41,7 @@ public class JavaBlobs implements ExtendedBlobs {
 	public Result<Void> upload(String blobId, byte[] bytes, String token) {
 		Log.info(() -> format("upload : blobId = %s, sha256 = %s\n", blobId, Hex.of(Hash.sha256(bytes))));
 
-		Log.info("HEREEEEEE1111" + blobId);
+		Log.info("HEREEEEEE1111" + token);
 
 		if( ! Token.isValid( token ) )
 			return error(FORBIDDEN);
@@ -65,13 +65,14 @@ public class JavaBlobs implements ExtendedBlobs {
 	}
 
 	@Override
-	public Result<byte[]> download(String blobId) {
+	public Result<byte[]> download(String blobId, String token) {
 		Log.info(() -> format("download : blobId = %s\n", blobId));
 
 		Log.info("HEREEEEEE" + blobId);
-
 		
-
+		if( ! Token.isValid( token ) )
+			return error(FORBIDDEN);
+        
 		var file = toFilePath(blobId);
 		if (file == null)
 			return error(BAD_REQUEST);
@@ -83,11 +84,16 @@ public class JavaBlobs implements ExtendedBlobs {
 	}
 
 	@Override
-	public Result<Void> downloadToSink(String blobId, Consumer<byte[]> sink) {
+	public Result<Void> downloadToSink(String blobId, Consumer<byte[]> sink, String token) {
 		Log.info(() -> format("downloadToSink : blobId = %s\n", blobId));
 
-		Log.info("HEREEEEEE333" + blobId);
+		Log.info("HEREEEEEE333" + token);
 
+		if (!token.equals("")) {
+			if( ! Token.isValid( token ) )
+			return error(FORBIDDEN);
+		}
+		    
 		var file = toFilePath(blobId);
 
 		if (file == null)

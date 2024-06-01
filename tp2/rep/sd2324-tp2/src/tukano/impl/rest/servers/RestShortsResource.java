@@ -69,8 +69,8 @@ public class RestShortsResource extends RestResource implements RestExtendedShor
 	}	
 
 	@Override
-	public void opFromPrimary(Long version, String operation, String opType, String token) {
-		super.resultOrThrow( impl.opFromPrimary(version, operation, opType, token) );
+	public void primaryOperation(Long version, String operation, String opType, String token) {
+		super.resultOrThrow( impl.primaryOperation(version, operation, opType, token) );
 	}
 
 	@Override

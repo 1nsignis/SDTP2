@@ -20,8 +20,8 @@ public class BlobsProxyResource extends RestResource implements RestExtendedBlob
     }
 
     @Override
-    public byte[] download(String blobId) {
-        return super.resultOrThrow(impl.download(blobId));
+    public byte[] download(String blobId, String token) {
+        return super.resultOrThrow(impl.download(blobId, token));
     }
 
     @Override

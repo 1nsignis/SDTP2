@@ -51,10 +51,9 @@ public class JavaBlobsProxy implements ExtendedBlobs {
 	private final OAuth20Service service;
 	private final OAuth2AccessToken accessToken;
 
-	private static final String apiKey = Args.valueOf("-apiKey", "2vg0b34it0yq8jl");
-	private static final String apiSecret = Args.valueOf("-apiSecret", "w0m72ken4uv84zt");
-	private static final String accessKey = Args.valueOf("-accessKey",
-			"sl.B2Qo7eabiL73IRk7Tfr-quAktw0kpoeYwgHKp-_FdVWdN_LYPL1P4ePzOn7x1sOxZHMMBolaAQG2o7FuMspAUmKKc8F550vR7xg_zJ19I5tfeDu4X1YPxCway0mhF_1VeSIyjCpIdh3y");
+	private static final String apiKey = Args.valueOf("-apiKey", "");
+	private static final String apiSecret = Args.valueOf("-apiSecret", "");
+	private static final String accessKey = Args.valueOf("-accessKey", "");
 	private static final Boolean state = State.get();
 
 	public JavaBlobsProxy() {
@@ -85,20 +84,16 @@ public class JavaBlobsProxy implements ExtendedBlobs {
 		uploadFile.addHeader(DROPBOX_API_ARG_HDR, jsonArgs);
 		uploadFile.addHeader(CONTENT_TYPE_HDR, OCTET_STREAM_CONTENT_TYPE);
 		uploadFile.setPayload(bytes);
-		Log.info("###uploadfile##:" + uploadFile);
 
 		service.signRequest(accessToken, uploadFile);
-		Log.info("###token##:" + accessToken);
-		Log.info("-----------------HERE---------------");
+		
 		try {
 			var response = service.execute(uploadFile);
-			Log.info("###response##:" + response);
 			if (response.getCode() != HTTP_SUCCESS) {
-				Log.info("-----------------HERE1---------------");
+				
 				return Result.error(Result.ErrorCode.INTERNAL_ERROR);
 			}
 		} catch (Exception e) {
-			Log.info("-----------------HERE2---------------");
 			return Result.error(Result.ErrorCode.INTERNAL_ERROR);
 		}
 
@@ -106,8 +101,9 @@ public class JavaBlobsProxy implements ExtendedBlobs {
 	}
 
 	@Override
-	public Result<byte[]> download(String blobId) {
-		
+	public Result<byte[]> download(String blobId, String token) {
+		if (!Token.isValid(token))
+			return error(FORBIDDEN);
 
 		var path = (getBlobPath(blobId) != null) ? getBlobPath(blobId) : ROOT;
 
@@ -137,8 +133,9 @@ public class JavaBlobsProxy implements ExtendedBlobs {
 	}
 
 	@Override
-	public Result<Void> downloadToSink(String blobId, Consumer<byte[]> sink) {
-		
+	public Result<Void> downloadToSink(String blobId, Consumer<byte[]> sink, String token) {
+		if (!Token.isValid(token))
+			return error(FORBIDDEN);
 
 		var path = (getBlobPath(blobId) != null) ? getBlobPath(blobId) : ROOT;
 
@@ -251,7 +248,6 @@ public class JavaBlobsProxy implements ExtendedBlobs {
 		try {
 			service.execute(deleteFolder);
 		} catch (Exception e) {
-			Log.info("-----------------HERE---------------");
 		}
 	}
 

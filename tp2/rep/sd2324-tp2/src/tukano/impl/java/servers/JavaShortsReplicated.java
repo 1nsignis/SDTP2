@@ -158,7 +158,7 @@ public class JavaShortsReplicated extends AbstractJavaShorts {
 	}
 
 	@Override
-	public Result<Void> opFromPrimary(Long version, String operation, String opType, String token) {
+	public Result<Void> primaryOperation(Long version, String operation, String opType, String token) {
 		if (!Token.matches(token)) {
 			return Result.error(Result.ErrorCode.FORBIDDEN);
 		}
@@ -211,7 +211,7 @@ public class JavaShortsReplicated extends AbstractJavaShorts {
 
 		for (ExtendedShorts client : clients) {
 			executorService.submit(() -> {
-				var res = client.opFromPrimary(repManager.getCurrentVersion(), operation, opType.name(), Token.get());
+				var res = client.primaryOperation(repManager.getCurrentVersion(), operation, opType.name(), Token.get());
 				if (res != null && res.isOK()) {
 					theadFinishedSignal.countDown();
 				}

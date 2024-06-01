@@ -25,5 +25,5 @@ public interface RestBlobs {
  	@GET
  	@Path("/{" + BLOB_ID +"}") 	
  	@Produces(MediaType.APPLICATION_OCTET_STREAM)
- 	byte[] download(@PathParam(BLOB_ID) String blobId);
+ 	byte[] download(@PathParam(BLOB_ID) String blobId, @QueryParam(TOKEN) String token);
 }

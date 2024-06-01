@@ -15,10 +15,6 @@ public class BlobsProxyServer extends AbstractRestServer {
 	public static final int PORT = 8080;
 
 	private static final Logger Log = Logger.getLogger(BlobsProxyServer.class.getName());
-	private static boolean state;
-	private static String apiKey;
-	private static String apiSecret;
-	private static String accessKey;
 
 	BlobsProxyServer(int port) {
 		super(Log, Blobs.NAME, port);
@@ -33,13 +29,7 @@ public class BlobsProxyServer extends AbstractRestServer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		/*
-		 * state = Boolean.parseBoolean(args[0]);
-		 * Args.use(args);
-		 * apiKey = Args.valueOf("-apiKey", "");
-		 * apiSecret = Args.valueOf("-apiSecret", "");
-		 * accessKey = Args.valueOf("-accessKey", "");
-		 */
+		
 		State.set(Boolean.parseBoolean(args[0]));
 		Args.use(args);
 		new BlobsProxyServer(Args.valueOf("-port", PORT)).start();

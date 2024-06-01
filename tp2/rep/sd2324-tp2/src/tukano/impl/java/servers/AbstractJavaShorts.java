@@ -205,7 +205,7 @@ public abstract class AbstractJavaShorts implements ExtendedShorts {
 
 		try {
 			URI uri = new URI(baseUrl);
-			var res = BlobsClients.get(uri).download(shortId);
+			var res = BlobsClients.get(uri).download(shortId, Token.generate());
 			if (!res.isOK())
 			    return false;
 		} catch (URISyntaxException e) {
@@ -503,7 +503,7 @@ public abstract class AbstractJavaShorts implements ExtendedShorts {
 	}
 
     @Override
-    public Result<Void> opFromPrimary(Long version, String operation, String opType, String token) {
+    public Result<Void> primaryOperation(Long version, String operation, String opType, String token) {
 		return Result.error(Result.ErrorCode.FORBIDDEN);
 	}
 

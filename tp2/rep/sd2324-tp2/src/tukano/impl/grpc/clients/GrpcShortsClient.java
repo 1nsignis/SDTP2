@@ -145,7 +145,7 @@ public class GrpcShortsClient extends GrpcClient implements ExtendedShorts {
 	}
 
 	@Override
-	public Result<Void> opFromPrimary(Long version, String operation, String opType, String token) {
+	public Result<Void> primaryOperation(Long version, String operation, String opType, String token) {
 		return Result.error(Result.ErrorCode.FORBIDDEN);
 	}
 

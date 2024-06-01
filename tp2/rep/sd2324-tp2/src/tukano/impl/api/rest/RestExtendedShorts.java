@@ -27,9 +27,10 @@ public interface RestExtendedShorts extends RestShorts {
 	@POST
 	@Path("/operation")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void opFromPrimary(@HeaderParam(HEADER_VERSION) Long version, String operation, @QueryParam("opType") String opType, @QueryParam(TOKEN) String token);
+	void primaryOperation(@HeaderParam(HEADER_VERSION) Long version, String operation, @QueryParam("opType") String opType, @QueryParam(TOKEN) String token);
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	List<Operation> getOperations(@HeaderParam(HEADER_VERSION) Long version, @QueryParam(TOKEN) String token);
+
 }

@@ -30,7 +30,7 @@ public interface Blobs {
 	 * @return (OK, bytes), if the blob exists;
 	 * 			 NOT_FOUND, if no blob matches the provided blobId
 	 */
-	Result<byte[]> download(String blobId);
+	Result<byte[]> download(String blobId, String token);
 
 	/**
 	 * Downloads a short video blob resource as a result suitable for streaming
@@ -43,8 +43,8 @@ public interface Blobs {
 	 * @return (OK,), if the blob exists;
 	 *		   NOT_FOUND, if no blob matches the provided blobId
 	 */
-	default Result<Void> downloadToSink(String blobId, Consumer<byte[]> sink) {
-		var res = download(blobId);
+	default Result<Void> downloadToSink(String blobId, Consumer<byte[]> sink, String token) {
+		var res = download(blobId, token);
 		if (!res.isOK())
 			return Result.error(res.error());
 
